@@ -1,0 +1,61 @@
+Textbook Answers:
+
+
+Exercises 1.2
+    1.
+        If at first you don't succeed,
+        failure may be your style
+
+    2. 
+        class Quote {
+            public static void main(String[]args) {
+                System.out.print("The unexamined life");
+                System.out.println(" is not worth living.");
+            }
+        }
+
+    3.
+        class Quote {
+            public static void main(String[]args) {
+                System.out.println("A slash is \"/\"");
+                System.out.println("while");
+                System.out.println("a backslash is \"\\\"");
+            }
+        }
+
+    4.
+        class BadForm {
+            public void main (string() args) {
+                System.Out.Println("What\'s wrong with this?");
+            }
+        }
+        
+
+Exercises 1.5:
+    1. 
+        a. 29.4
+        b. 0.4
+        c. -0.002
+        d. 0.02677
+        e. -0.054
+        f. -3
+
+    2.
+        a. 270000 270E3 2700E2
+        b. -0.58 -5.8e-1 -58e-2
+        c. -8.769e1 -0.8769e2 -876.9e-1
+        d. -0.0003 -0.003e-1 -0.03e-2
+
+    3. 
+        a. float
+        b. long
+        c. int
+        d. boolean
+        e. double
+        f. float
+        g. float
+        h. char
+
+Exercises 1.6:
+    1. Classes use capital as their first letter, variables and methods have a lowercase
+    2. c - space, e - symbol, f - symbol
