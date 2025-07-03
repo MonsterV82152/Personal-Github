@@ -13,4 +13,14 @@ f. -3
 a. 270000 270E3 2700E2
 b. -0.58 -5.8e-1 -58e-2
 c. -8.769e1 -0.8769e2 -876.9e-1
-d. 
+d. -0.0003 -0.003e-1 -0.03e-2
+
+3. 
+a. float
+b. long
+c. int
+d. boolean
+e. double
+f. float
+g. float
+h. char
