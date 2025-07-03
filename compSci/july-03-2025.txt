@@ -16,7 +16,7 @@ Exercises 1.2
 
     3.
         class Quote {
-            public static void main(String[]args) {
+            public static void main(String[] args) {
                 System.out.println("A slash is \"/\"");
                 System.out.println("while");
                 System.out.println("a backslash is \"\\\"");
@@ -25,8 +25,8 @@ Exercises 1.2
 
     4.
         class BadForm {
-            public void main (string() args) {
-                System.Out.Println("What\'s wrong with this?");
+            public static void main(String[] args) {
+                System.out.println("What\'s wrong with this?");
             }
         }
         
