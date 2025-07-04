@@ -31,6 +31,24 @@ Exercises 1.2
         }
         
 
+Exercises 1.4
+    1. 16
+
+    2. 
+        a. 127
+        b. 9,223,372,036,854,775,807
+        c. 32,767
+        d. 2,147,483,647
+
+    3. 
+        a. int
+        b. long
+        c. byte
+        d. short
+    
+    4. b, c, d
+    5. 4294967295
+
 Exercises 1.5:
     1. 
         a. 29.4
@@ -59,3 +77,8 @@ Exercises 1.5:
 Exercises 1.6:
     1. Classes use capital as their first letter, variables and methods have a lowercase
     2. c - space, e - symbol, f - symbol
+    3. 
+        a. int quantity, size; double price;
+        b. double income, rate, discount; char taxCode;
+    4. int heads, tails; float percentage; char firstInitials, lastInitials;
+    
