@@ -1,11 +1,10 @@
+import java.util.Scanner;
 public class aadfsa {
     public static void main(String[] args) {
-        byte a = (byte)0b11101011;
-        byte b = (byte)0b01010101;
-        System.out.println(a);
-        System.out.println(b);
-        System.out.println(a & b);
-        System.out.println((short)(10/0.0));
+        int a = 1, b = 2, c = 3, d = 4;
+        a += +a++*++a;
+        System.out.println(Math.random() * 10);
+        System.out.printf("%d %d %d %d \n", a, b, c, d);
 
     }
 }
