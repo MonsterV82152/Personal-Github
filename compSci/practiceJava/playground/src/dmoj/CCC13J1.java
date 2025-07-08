@@ -1,3 +1,4 @@
+package dmoj;
 import java.util.Scanner;
 public class CCC13J1 {
     public static void main(String[] args) {
