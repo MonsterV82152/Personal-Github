@@ -82,3 +82,96 @@ Exercises 1.6:
         b. double income, rate, discount; char taxCode;
     4. int heads, tails; float percentage; char firstInitials, lastInitials;
     
+
+
+Exercises 2.1
+
+1. 
+    a. 5
+    b. 45.0
+    c. 198.0
+    d. 7
+    e. 7.5
+    f. 0
+    g. Divide By 0
+    h. 2.4
+    i. 35
+    j. -7
+    k. 0.0
+    l. 0.375
+
+2. 
+    a. 2
+    b. 3
+    c. 8
+    d. 1/2
+    e. 0
+    f. 2.7
+    g. 1.0
+    h. 2.9f
+    i. 1.5
+    j. -Inf
+    k. -1
+    l. -0.5
+
+
+
+Exercises 4.1
+
+1. 0
+2. Inf
+3.  10 0
+    9 2
+    8 4
+    7 6
+4. 
+
+    import java.util.Scanner
+
+    public class PowersOfTwo {
+        public static void main(String[] args) {
+            Scanner scan = new Scanner(System.in);
+            num = scan.nextInt();
+            
+            int i = 1;
+            while (i < num) {
+                i*=2;
+            }
+            System.out.println(i);
+        }
+    }
+
+5. 
+
+    import java.util.Scanner
+
+    public class ThatOneQuestion {
+        public static void main(String[] args) {
+            Scanner scan = new Scanner(System.in);
+            int counter = 0;
+            String current = ""
+            for (String i; !i.equals("0"); i = scan.nextLine()) {
+                if (i.equals(current)) {
+                    counter++;
+                } else {
+                    current = i;
+                }
+            }
+            System.out.println(counter);
+        }
+    }
+
+Exercises 4.2
+
+1. When you want the code to run once
+2. 
+    How many items to add?
+    Give a positive value. 
+3. 
+    System.out.println("Continue? Respond with y or n.");
+    do {
+        response = scan.nextLine()
+        if (!(response.equals("y") || response.equals("n"))) {
+            System.out.println("Continue? Respond with y or n.");
+        }
+    } while (!(response.equals("y") || response.equals("n")));
