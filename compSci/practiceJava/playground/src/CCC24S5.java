@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 public class CCC24S5 {
     static int sum;
-    static boolean[][] visited;;
     static int total;
     static int n;
 

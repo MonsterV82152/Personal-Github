@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Scanner;
 
@@ -22,23 +24,33 @@ public class CCC07J5 {
         }
         stops.sort(null);
         scan.close();
-        int ways = 0;
+
+        long ways = 0;
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < stops.size(); i++) {
+            for (int j = i; j < stops.size(); j++) {
+                if (stops.get(i) + min <= stops.get(j)) {
+                    if (stops.get(i) + max < stops.get(j)) {
+                        break;
+                    } else if (!(stops.get(i) == stops.get(j))) {
+                        map.computeIfAbsent(i, k -> new ArrayList<>()).add(j);
+                    }
+                }
+            }
+        }
         Queue<Integer> que = new LinkedList<Integer>(Arrays.asList(0));
+        int size = stops.size() - 1;
         while (!que.isEmpty()) {
             int current = que.poll();
-            int far = current + max;
-            int close = current + min;
-            for (int i : stops) {
-                if (i >= close) {
-                    if (i > far) {
-                        break;
-                    } else if (i == 7000) {
-                        ways++;
-                        break;
-                    }
-                    que.add(i);
-
+            List<Integer> nextStops = map.get(current);
+            if (nextStops == null)
+                continue;
+            for (int i : nextStops) {
+                if (i == size) {
+                    ways++;
+                    break;
                 }
+                que.add(i);
             }
         }
         System.out.println(ways);
