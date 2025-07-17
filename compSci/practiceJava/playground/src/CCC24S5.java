@@ -19,7 +19,6 @@ public class CCC24S5 {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         n = scan.nextInt();
-        visited = new boolean[2][n];
         scan.nextLine();
         // Old version of the code made by Eddy
         /*
@@ -52,40 +51,78 @@ public class CCC24S5 {
             }
         }
         total = n * 2;
-        System.out.println(findChunks(grid, new boolean[2][n], 0, 0, 0, new int[]{0,0}, new boolean[2][n]));
+        System.out.println(findChunks(grid, new boolean[2][n], 0, 0, 0, new int[] { 0, 0 }, new boolean[2][n]));
     }
 
-    private static int findChunks(List<List<Integer>> grid, boolean[][] visited, int currentSum, int currentTotal,
-            int chunks, int[] pos, boolean[][] tempVisited) {
+    class State {
+        boolean[][] visited;
+        int[][] position;
+        int sum;
+        int total;
 
-        if (pos[1] >= 0 && pos[1] < n && !tempVisited[pos[0]][pos[1]] && !visited[pos[0]][pos[1]]) {
-            tempVisited[pos[0]][pos[1]] = true;
-            currentSum += grid.get(pos[0]).get(pos[1]);
-            currentTotal++;
-            if (currentSum * total == sum * currentTotal) {
-                for (int i = 0; i < 2; i++) {
-                    for (int m = 0; m < n; m++) {
-                        visited[i][m] = visited[i][m] || tempVisited[i][m];
+        State(boolean[][] visited, int[][] position, int currentSum, int currentTotal) {
+            this.visited = visited;
+            this.position = position;
+            this.sum = currentSum;
+            this.total = currentTotal;
+        }
+    }
+
+    private static int findChunks(List<List<Integer>> grid, boolean[][] visited,
+            int chunks, int[][] start) {
+        Queue<State> que = new LinkedList<>();
+        que.add(new State(new boolean[2][n], start, 0, 0));
+        List<Integer> solutions = new ArrayList<Integer>();
+        while (!que.isEmpty()) {
+            State currentState = que.poll();
+            if (currentState.sum * total == currentState.total * sum) {
+                boolean[][] vis = new boolean[2][n];
+                bool full = true;
+                for (int i = 0; i < visited.length; i++) {
+                    for (int j = 0; j < visited[i].length; j++) {
+                        vis[i][j] = visited[i][j] || currentState.visited[i][j];
                     }
                 }
-                for (int i = 0; i < visited.length; i++) {
-                    for (int m = 0; m < visited[i].length; m++) {
-                        if (!visited[i][m]) {
-                            return findChunks(grid, visited, 0, 0, chunks+1, new int[]{i, m}, new boolean[2][n]);
+                for (int i = 0; i < vis.length; i++) {
+                    for (int j = 0; j < vis[i].length; j++) {
+                        if (!vis[i][j]) {
+                            full = false;
+                            solutions.add(findChunks(grid, vis, chunks + 1, new int[] { i, j }));
+                            break;
                         }
                     }
                 }
-                return chunks+1;
-            }
-            int[][] neighbors = new int[][]{{pos[0]^1, pos[1]},{pos[0], pos[1]+1},{pos[0], pos[1]-1}};
-            int highest = 0;
-            for (int[] i : neighbors) {
-                int temp = findChunks(grid, visited, currentSum, currentTotal, chunks, i, tempVisited);
-                if (temp > highest) {
-                    highest = temp;
+                if (full) {
+                    int highest = 1;
+                    for (int i : solutions) {
+                        if (i > highest) {
+                            highest = i;
+                        }
+                    }
+                    return highest;
+                }
+            } else {
+                for (int[] pos : currentState.position) {
+                    int[][] neighbors = { { pos[0] ^ 1, pos[1] }, { pos[0] - 1, pos[1] }, { pos[0], pos[1] + 1 } };
+                    List<int[]> canVisit = new ArrayList<>();
+                    for (int[] i : neighbors) {
+                        if (i[1] >= 0 && i[1] < n && !visited[i[0]][i[1]] && !currentState.visited[i[0]][i[1]]) {
+                            canVisit.add(i);
+                        }
+                    }
+                    for (int i = 0; i < canVisit.size(); i++) {
+                        boolean[][] vis = currentState.visited;
+                        vis[canVisit.get(i)[0]][canVisit.get(i)[1]] = true;
+                        que.add(new State(vis, new int[][]{canVisit.get(i)}, currentState.sum+grid.get(canVisit.get(i)[0]).get(canVisit.get(i)[1]), currentState.total+1));
+                        for (int j = i + 1; j < canVisit.size(); j++) {
+                            boolean[][] vis2 = vis;
+                            vis2[canVisit.get(j)[0]][canVisit.get(j)[1]] = true;
+
+                        }
+                    }
                 }
             }
-            return highest;
+
         }
 
         return 1;
