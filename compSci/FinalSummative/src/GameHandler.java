@@ -44,8 +44,9 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
         clickButton = new JButton("Click!");
         clickButton.addActionListener(e -> {
             Point loc = clickButton.getLocation();
-            dopamineCount += Math.random()*100 < upgradeHandler.getCritUpgrade() ? upgradeHandler.getDPC()*6 : upgradeHandler.getDPC();
-            numbers.add(new FloatingNumber(loc.x + (int) (Math.random() * 50) + 5, loc.y, upgradeHandler.getDPC()));
+            int dope = Math.random()*100 < upgradeHandler.getCritUpgrade() ? upgradeHandler.getDPC()*6 : upgradeHandler.getDPC();
+            dopamineCount += dope;
+            numbers.add(new FloatingNumber(loc.x + (int) (Math.random() * 50) + 5, loc.y, dope, dope > upgradeHandler.getDPC()));
         });
         clickButton.setBounds((1000 - 100) / 2, (700 - 40) / 2, 100, 40);
         clickButton.setVisible(true);
