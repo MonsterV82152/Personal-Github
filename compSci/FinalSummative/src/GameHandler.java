@@ -1,5 +1,8 @@
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
@@ -10,7 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class GameHandler extends Canvas implements Runnable, KeyListener, MouseListener {
+public class GameHandler extends JPanel implements Runnable, KeyListener, MouseListener {
     private static JFrame window;
     private static boolean alive;
     private static GameHandler instance;
@@ -18,41 +21,57 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
     private static Thread gameThread;
     private static UpgradeHandler upgradeHandler;
     private static List<FloatingNumberDisplay> numbers;
-    private BufferStrategy bs;
+    private static JLayeredPane layeredPane;
+    private static JButton clickButton; // Make button a field so we can access it
 
     private GameHandler() {
         window = new JFrame("Dopamine Clicker");
-
         dopamineCount = 1000;
         numbers = new CopyOnWriteArrayList<>();
         upgradeHandler = new UpgradeHandler(this, window);
-
+        layeredPane = new JLayeredPane();
+        
+        // Set up window
         window.setSize(1000, 700);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setLayout(null);
+        window.setLocationRelativeTo(null);
+        
+        // Set up the game panel (this)
         this.addKeyListener(this);
         this.setFocusable(true);
         this.addMouseListener(this);
-        this.setIgnoreRepaint(true);
-        window.setLocationRelativeTo(null);
+        this.setOpaque(false); // Keep transparent so button shows through
+        this.setBounds(0, 0, 1000, 700);
 
-        this.setSize(window.getSize());
-
-        JButton button = new JButton("Click!");
-        button.addActionListener(e -> {
-            Point loc = button.getLocation();
+        // Create and set up the click button
+        clickButton = new JButton("Click!");
+        clickButton.addActionListener(e -> {
+            Point loc = clickButton.getLocation();
             dopamineCount += upgradeHandler.getDPC();
             numbers.add(new FloatingNumber(loc.x + (int) (Math.random() * 50) + 5, loc.y, upgradeHandler.getDPC()));
         });
-        button.setSize(100, 40);
-        button.setLocation((1000 - 100) / 2, (700 - 40) / 2);
-        window.add(button);
-        window.add(this);
+        clickButton.setBounds((1000 - 100) / 2, (700 - 40) / 2, 100, 40);
+        clickButton.setVisible(true);
 
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Set up layered pane
+        layeredPane.setPreferredSize(new Dimension(1000, 700));
+        layeredPane.setBounds(0, 0, 1000, 700);
+        
+        // Add components to layered pane - BUTTON ON TOP
+        layeredPane.add(this, JLayeredPane.DEFAULT_LAYER); // Game panel on bottom
+        layeredPane.add(clickButton, JLayeredPane.PALETTE_LAYER); // Button on top
+        
+        // Add mouse motion listener to the layered pane instead of in run()
+        layeredPane.addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseMoved(MouseEvent e) {
+                upgradeHandler.hoverEvent(e, dopamineCount);
+            }
+        });
+
+        // Set up window content
+        window.setContentPane(layeredPane);
         window.setVisible(true);
-
     }
 
     public static GameHandler getInstance() {
@@ -62,39 +81,37 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
         return instance;
     }
 
-    private void render() {
-        bs = getBufferStrategy();
-        if (bs == null)
-            return;
-
-        do {
-            do {
-                Graphics g = bs.getDrawGraphics();
-                try {
-                    g.clearRect(0, 0, 1000, 700); // Clear old frame
-                    dopamineCount += upgradeHandler.drawBackground(g);
-                    for (FloatingNumberDisplay element : numbers) {
-                        element.draw(g);
-                    }
-                    g.setColor(Color.BLACK);
-                    g.setFont(new Font("Arial", Font.BOLD, 18));
-                    g.drawString("Dopamine Count: " + dopamineCount, 20, 50);
-                    g.drawString("Dopamine Per Second: " + upgradeHandler.getDPS(), 20, 80);
-                    g.drawString("Dopamine Per Click: " + upgradeHandler.getDPC(), 20, 110);
-                    upgradeHandler.draw(g);
-
-                } finally {
-                    g.dispose();
-                }
-
-            } while (bs.contentsRestored());
-            bs.show();
-        } while (bs.contentsLost());
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        
+        // Create Graphics2D for better rendering
+        Graphics2D g2d = (Graphics2D) g.create();
+        
+        // Clear the background
+        g2d.setColor(getBackground());
+        g2d.fillRect(0, 0, getWidth(), getHeight());
+        
+        // Draw game elements
+        dopamineCount += upgradeHandler.drawBackground(g2d);
+        
+        for (FloatingNumberDisplay element : numbers) {
+            element.draw(g2d);
+        }
+        
+        // Draw UI text
+        g2d.setColor(Color.BLACK);
+        g2d.setFont(new Font("Arial", Font.BOLD, 18));
+        g2d.drawString("Dopamine Count: " + dopamineCount, 20, 50);
+        g2d.drawString("Dopamine Per Second: " + upgradeHandler.getDPS(), 20, 80);
+        g2d.drawString("Dopamine Per Click: " + upgradeHandler.getDPC(), 20, 110);
+        
+        upgradeHandler.draw(g2d);
+        
+        g2d.dispose(); // Clean up graphics context
     }
 
     public synchronized void start() {
-        this.createBufferStrategy(2);
-        bs = getBufferStrategy();
         if (alive)
             return;
         alive = true;
@@ -105,15 +122,15 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
     public synchronized void stop() {
         alive = false;
         try {
-            gameThread.join();
+            if (gameThread != null) {
+                gameThread.join();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 
     public void run() {
-
         Timer timer = new Timer();
 
         TimerTask task = new TimerTask() {
@@ -130,11 +147,11 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
                 upgradeHandler.hoverEvent(e, dopamineCount);
             }
         });
-
         timer.scheduleAtFixedRate(task, delay, period);
+        
         while (alive) {
             update();
-            render();
+            repaint();
 
             try {
                 Thread.sleep(16); // ~60 FPS
@@ -143,8 +160,8 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
             }
         }
 
+        timer.cancel(); // Clean up timer
         stop();
-
     }
 
     private void update() {
@@ -155,14 +172,15 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
     }
 
     public void keyPressed(KeyEvent e) {
-
+        // Add key handling if needed
     }
 
     public void keyReleased(KeyEvent e) {
-
+        // Add key handling if needed
     }
 
     public void keyTyped(KeyEvent e) {
+        // Add key handling if needed
     }
 
     @Override
@@ -185,5 +203,4 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
     @Override
     public void mouseReleased(MouseEvent e) {
     }
-
 }

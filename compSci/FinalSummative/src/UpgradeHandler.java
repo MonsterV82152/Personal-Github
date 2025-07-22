@@ -7,13 +7,14 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class UpgradeHandler {
     private int dps;
     private int dpsMult;
     private int dpc;
     private int dpcMult;
-    private Canvas parentCanvas;
+    private JPanel parentCanvas;
     private JFrame window;
     private List<Upgrade> upgrades;
     private List<GifSprite> sprites;
@@ -21,7 +22,7 @@ public class UpgradeHandler {
     private int x = 400, y = 380; // Default position for upgrades
     private List<DVDHandler> dvds;
 
-    public UpgradeHandler(Canvas parentCanvas, JFrame window) {
+    public UpgradeHandler(JPanel parentCanvas, JFrame window) {
         this.parentCanvas = parentCanvas;
         this.window = window;
         dpc = 1;

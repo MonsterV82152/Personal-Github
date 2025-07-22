@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 public class DVDHandler {
     int x, y;
@@ -53,7 +54,7 @@ public class DVDHandler {
         return frames > 0;
     }
 
-    public void draw(Graphics g, Canvas parentCanvas) {
+    public void draw(Graphics g, JPanel parentCanvas) {
         g.drawImage(image, x, y, dvdWidth, dvdHeight, parentCanvas);
     }
 }
