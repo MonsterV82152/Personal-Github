@@ -18,7 +18,7 @@ public class UpgradeHandler {
     private List<Upgrade> upgrades;
     private List<GifSprite> sprites;
     private Tooltip tooltip = null;
-    private int x = 413, y = 380; // Default position for upgrades
+    private int x = 400, y = 380; // Default position for upgrades
     private List<DVDHandler> dvds;
 
     public UpgradeHandler(Canvas parentCanvas, JFrame window) {
@@ -50,7 +50,7 @@ public class UpgradeHandler {
                     }
                     return null;
                 }));
-        upgrades.add(new Upgrade("Lofi Beats", 500, 1.5, "images/lofiBeats.png", () -> {
+        upgrades.add(new Upgrade("Lofi Beats", 500, "images/lofiBeats.png", () -> {
             dps += 25;
             GifSprite sprite = new GifSprite("images/lofi-girl.gif", 400, 500, 200, 200);
             if (!sprites.contains(sprite)) {
@@ -66,15 +66,15 @@ public class UpgradeHandler {
             return null;
 
         }));
-        upgrades.add(new Upgrade("Breaking News", 700, 1.5, "images/breaking_news.png", () -> {
+        upgrades.add(new Upgrade("Breaking News", 700,  "images/breaking_news.png", () -> {
             dps += 50;
-            GifSprite sprite = new GifSprite("images/breakingNews.gif", 600, 500, 200, 200);
+            GifSprite sprite = new GifSprite("images/breakingNews.gif", 0, 0, 1000, 20);
             if (!sprites.contains(sprite)) {
                 sprites.add(sprite);
             }
             return null;
         }));
-        upgrades.add(new Upgrade("Subway Surfers", 1000, 1.5, "images/subwaySurfer.png", () -> {
+        upgrades.add(new Upgrade("Subway Surfers", 1000, "images/subwaySurfer.png", () -> {
             dps += 100;
             GifSprite sprite = new GifSprite("images/subway_surfer.gif", 600, 500, 200, 200);
             if (!sprites.contains(sprite)) {
@@ -87,6 +87,9 @@ public class UpgradeHandler {
     public void draw(Graphics g) {
         int count = 0;
         for (Upgrade element : upgrades) {
+            if (count >= 5) {
+                break; // Limit to first 5 upgrades
+            }
             if (element.type == Upgrade.SINGLE && element.count > 0) {
                 continue;
             } else {
@@ -100,9 +103,7 @@ public class UpgradeHandler {
             tooltip.draw(g);
         }
         
-        for (GifSprite sprite : sprites) {
-            g.drawImage(sprite.image, sprite.x, sprite.y, sprite.width, sprite.height, parentCanvas);
-        }
+        
     }
     public int drawBackground(Graphics g) {
         int sum = 0;
@@ -110,6 +111,9 @@ public class UpgradeHandler {
             sum += dvd.update();
             dvd.draw(g, parentCanvas);
 
+        }
+        for (GifSprite sprite : sprites) {
+            g.drawImage(sprite.image, sprite.x, sprite.y, sprite.width, sprite.height, parentCanvas);
         }
         return sum;
 
@@ -165,6 +169,9 @@ public class UpgradeHandler {
             Upgrade upgrade = upgrades.get(counter);
             if (upgrade.type == Upgrade.SINGLE && upgrade.count > 0)
                 continue;
+            if (i >= 4) {
+                break; // Limit to first 5 upgrades
+            }
             i++;
             int rectX = x + i * 45;
             int rectY = y;

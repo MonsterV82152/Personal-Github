@@ -23,7 +23,7 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
     private GameHandler() {
         window = new JFrame("Dopamine Clicker");
 
-        dopamineCount = 0;
+        dopamineCount = 1000;
         numbers = new CopyOnWriteArrayList<>();
         upgradeHandler = new UpgradeHandler(this, window);
 
@@ -78,9 +78,9 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
                     }
                     g.setColor(Color.BLACK);
                     g.setFont(new Font("Arial", Font.BOLD, 18));
-                    g.drawString("Dopamine Count: " + dopamineCount, 20, 30);
-                    g.drawString("Dopamine Per Second: " + upgradeHandler.getDPS(), 20, 60);
-                    g.drawString("Dopamine Per Click: " + upgradeHandler.getDPC(), 20, 90);
+                    g.drawString("Dopamine Count: " + dopamineCount, 20, 50);
+                    g.drawString("Dopamine Per Second: " + upgradeHandler.getDPS(), 20, 80);
+                    g.drawString("Dopamine Per Click: " + upgradeHandler.getDPC(), 20, 110);
                     upgradeHandler.draw(g);
 
                 } finally {
