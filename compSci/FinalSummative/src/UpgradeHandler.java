@@ -43,23 +43,15 @@ public class UpgradeHandler {
         }));
         upgrades.add(new Upgrade("Hydraulic Press", 100, 1.5,
                 "images/hydraulicPress.png", () -> {
-                    dps += 20;
+                    dps += 10;
                     GifSprite sprite = new GifSprite("images/hydraulic_press.gif", 800, 500, 200, 200);
                     if (!sprites.contains(sprite)) {
                         sprites.add(sprite);
                     }
                     return null;
                 }));
-        upgrades.add(new Upgrade("Subway Surfers", 500, 1.5, "images/subwaySurfer.png", () -> {
-            dps += 100;
-            GifSprite sprite = new GifSprite("images/subway_surfer.gif", 600, 500, 200, 200);
-            if (!sprites.contains(sprite)) {
-                sprites.add(sprite);
-            }
-            return null;
-        }));
-        upgrades.add(new Upgrade("Lofi Beats", 700, 1.5, "images/lofiBeats.png", () -> {
-            dps += 200;
+        upgrades.add(new Upgrade("Lofi Beats", 500, 1.5, "images/lofiBeats.png", () -> {
+            dps += 25;
             GifSprite sprite = new GifSprite("images/lofi-girl.gif", 400, 500, 200, 200);
             if (!sprites.contains(sprite)) {
                 sprites.add(sprite);
@@ -73,6 +65,22 @@ public class UpgradeHandler {
             }
             return null;
 
+        }));
+        upgrades.add(new Upgrade("Breaking News", 700, 1.5, "images/breaking_news.png", () -> {
+            dps += 50;
+            GifSprite sprite = new GifSprite("images/breakingNews.gif", 600, 500, 200, 200);
+            if (!sprites.contains(sprite)) {
+                sprites.add(sprite);
+            }
+            return null;
+        }));
+        upgrades.add(new Upgrade("Subway Surfers", 1000, 1.5, "images/subwaySurfer.png", () -> {
+            dps += 100;
+            GifSprite sprite = new GifSprite("images/subway_surfer.gif", 600, 500, 200, 200);
+            if (!sprites.contains(sprite)) {
+                sprites.add(sprite);
+            }
+            return null;
         }));
     }
 
