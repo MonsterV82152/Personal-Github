@@ -1,3 +1,9 @@
+/**
+ * @author Eddy Liang
+ * @date July 18, 2025
+ * @problem CCC '07 S5 - Keep on Truckin'
+ */
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,44 +22,44 @@ public class CCC07J5 {
         stops = new ArrayList<>(
                 Arrays.asList(0, 990, 1010, 1970, 2030, 2940, 3060, 3930, 4060, 4970, 5030, 5990, 6010, 7000));
         Scanner scan = new Scanner(System.in);
-        min = scan.nextInt();
-        max = scan.nextInt();
+        min = scan.nextInt(); // Gets the min distance
+        max = scan.nextInt(); // Gets the max distance
         int extraStops = scan.nextInt();
         for (int i = 0; i < extraStops; i++) {
-            stops.add(scan.nextInt());
+            stops.add(scan.nextInt()); // Adds each extra stop
         }
-        stops.sort(null);
+        stops.sort(null); // Sorts the list from smallest to largest
         scan.close();
 
-        long ways = 0;
+        long ways = 0; // Set a counter for the # of possible paths
         Map<Integer, List<Integer>> map = new HashMap<>();
         for (int i = 0; i < stops.size(); i++) {
             for (int j = i; j < stops.size(); j++) {
                 if (stops.get(i) + min <= stops.get(j)) {
-                    if (stops.get(i) + max < stops.get(j)) {
+                    if (stops.get(i) + max < stops.get(j)) { // breaks if larger to save time
                         break;
                     } else if (!(stops.get(i) == stops.get(j))) {
-                        map.computeIfAbsent(i, k -> new ArrayList<>()).add(j);
+                        map.computeIfAbsent(i, k -> new ArrayList<>()).add(j); // Add the node if doesn't exist, else, add the connected point
                     }
                 }
             }
         }
-        Queue<Integer> que = new LinkedList<Integer>(Arrays.asList(0));
+        Queue<Integer> que = new LinkedList<Integer>(Arrays.asList(0)); // BFS queue
         int size = stops.size() - 1;
-        while (!que.isEmpty()) {
-            int current = que.poll();
+        while (!que.isEmpty()) { // Cycles through the queue
+            int current = que.poll(); // Gets and removes the first element in the queue
             List<Integer> nextStops = map.get(current);
             if (nextStops == null)
                 continue;
             for (int i : nextStops) {
                 if (i == size) {
-                    ways++;
+                    ways++; // Adds possible path if reached the end
                     break;
                 }
-                que.add(i);
+                que.add(i); // Adds possible branches
             }
         }
-        System.out.println(ways);
+        System.out.println(ways); // Print the # of ways.
 
     }
 }

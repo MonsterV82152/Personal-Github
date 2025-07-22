@@ -10,7 +10,7 @@ import javax.management.timer.Timer;
 /**
  * @author me
  */
-public class LongPrint {
+public class longPrint {
     public static void main(String[] args) throws Exception {
         Scanner scan = new Scanner(System.in);
         for (String input = ""; !input.equals("quit"); input = scan.nextLine()) {
