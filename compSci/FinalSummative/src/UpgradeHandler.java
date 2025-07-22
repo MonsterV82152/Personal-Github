@@ -67,7 +67,7 @@ public class UpgradeHandler {
             return null;
 
         }));
-        upgrades.add(new Upgrade("Breaking News", 700,  "images/breaking_news.png", () -> {
+        upgrades.add(new Upgrade("Breaking News", 700, "images/breaking_news.png", () -> {
             dps += 50;
             GifSprite sprite = new GifSprite("images/breakingNews.gif", 0, 0, 1000, 20);
             if (!sprites.contains(sprite)) {
@@ -85,17 +85,15 @@ public class UpgradeHandler {
         }));
         upgrades.add(new Upgrade("Soothing Rain Sounds", 2500, "images/rain.png", () -> {
             dps += 150;
-            GifSprite sprite = new GifSprite("images/rain.gif", 0, 20, 1000, 300);
-            if (!sprites.contains(sprite)) {
-                sprites.add(sprite);
-                File audioFile = new File("sounds/rain.wav");
-                AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
-                // Get clip and open
-                Clip clip = AudioSystem.getClip();
-                clip.open(audioStream);
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-            }
+            File audioFile = new File("sounds/rain.wav");
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+
+            // Get clip and open
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+
             return null;
         }));
     }
@@ -118,9 +116,9 @@ public class UpgradeHandler {
         if (tooltip != null) {
             tooltip.draw(g);
         }
-        
-        
+
     }
+
     public int drawBackground(Graphics g) {
         int sum = 0;
         for (DVDHandler dvd : dvds) {
@@ -194,7 +192,8 @@ public class UpgradeHandler {
 
             if (mouseX >= rectX && mouseX <= rectX + 40 &&
                     mouseY >= rectY && mouseY <= rectY + 40) {
-                tooltip = new Tooltip(upgrade.name, "Price: " + upgrade.price, mouseX + 10, mouseY, upgrade.price > dopamine);
+                tooltip = new Tooltip(upgrade.name, "Price: " + upgrade.price, mouseX + 10, mouseY,
+                        upgrade.price > dopamine);
                 break;
             }
         }

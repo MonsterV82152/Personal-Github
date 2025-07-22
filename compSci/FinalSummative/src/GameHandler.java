@@ -26,7 +26,7 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
 
     private GameHandler() {
         window = new JFrame("Dopamine Clicker");
-        dopamineCount = 1000;
+        dopamineCount = 10000;
         numbers = new CopyOnWriteArrayList<>();
         upgradeHandler = new UpgradeHandler(this, window);
         layeredPane = new JLayeredPane();
