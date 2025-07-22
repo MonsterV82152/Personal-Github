@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameHandler extends Canvas implements Runnable, KeyListener, MouseListener {
     private static JFrame window;
@@ -28,8 +29,8 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
         window = new JFrame("Dopamine Clicker");
 
         dopamineCount = 0;
-        numbers = new ArrayList<>();
-        upgradeHandler = new UpgradeHandler(this);
+        numbers = new CopyOnWriteArrayList<>();
+        upgradeHandler = new UpgradeHandler(this, window);
 
         window.setSize(1000, 700);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,6 +39,9 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
         this.addKeyListener(this);
         this.setFocusable(true);
         this.addMouseListener(this);
+        this.setIgnoreRepaint(true);
+        window.setLocationRelativeTo(null);
+
         this.setSize(window.getSize());
 
         JButton button = new JButton("Click!");
@@ -54,9 +58,6 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
 
-        this.createBufferStrategy(2);
-        bs = getBufferStrategy();
-
     }
 
     public static GameHandler getInstance() {
@@ -67,30 +68,37 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
     }
 
     private void render() {
+        bs = getBufferStrategy();
         if (bs == null)
             return;
 
         do {
             do {
                 Graphics g = bs.getDrawGraphics();
-                g.setColor(Color.WHITE);
-                g.fillRect(0, 0, getWidth(), getHeight());
-                List<FloatingNumberDisplay> numberList = numbers;
-                for (FloatingNumberDisplay element : numberList) {
-                    element.draw(g);
+                try {
+                    g.clearRect(0, 0, 1000, 700); // Clear old frame
+                    g.setColor(Color.WHITE);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                    for (FloatingNumberDisplay element : numbers) {
+                        element.draw(g);
+                    }
+                    g.setColor(Color.BLACK);
+                    g.setFont(new Font("Arial", Font.BOLD, 18));
+                    g.drawString("Dopamine Count: " + dopamineCount, 20, 30);
+                    g.drawString("Dopamine Per Second: " + upgradeHandler.getDPS(), 20, 60);
+                    upgradeHandler.draw(g);
+                } finally {
+                    g.dispose();
                 }
-                g.setColor(Color.BLACK);
-                g.setFont(new Font("Arial", Font.BOLD, 18));
-                g.drawString("Dopamine Count: " + dopamineCount, 20, 30);
-                g.drawString("Dopamine Per Second: " + upgradeHandler.getDPS(), 20, 60);
-                upgradeHandler.draw(g);
-                g.dispose();
+
             } while (bs.contentsRestored());
             bs.show();
         } while (bs.contentsLost());
     }
 
     public synchronized void start() {
+        this.createBufferStrategy(2);
+        bs = getBufferStrategy();
         if (alive)
             return;
         alive = true;
@@ -115,13 +123,12 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                dopamineCount+=upgradeHandler.getDPS();
+                dopamineCount += upgradeHandler.getDPS();
             }
         };
 
-
-        long delay = 1000; 
-        long period = 1000; 
+        long delay = 1000;
+        long period = 1000;
 
         timer.scheduleAtFixedRate(task, delay, period);
         while (alive) {

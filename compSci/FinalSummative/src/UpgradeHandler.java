@@ -2,8 +2,10 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 public class UpgradeHandler {
     private int dps;
@@ -11,27 +13,31 @@ public class UpgradeHandler {
     private int dpc;
     private int dpcMult;
     private Canvas parentCanvas;
+    private JFrame window;
     private List<Upgrade> upgrades;
     private List<GifSprite> sprites;
 
-    public UpgradeHandler(Canvas parentCanvas) {
+    public UpgradeHandler(Canvas parentCanvas, JFrame window) {
         this.parentCanvas = parentCanvas;
+        this.window = window;
         dpc = 1;
         dpcMult = 1;
         dps = 0;
         dpsMult = 1;
-        upgrades = new ArrayList<>();
+        sprites = new CopyOnWriteArrayList<>();
+        upgrades = new CopyOnWriteArrayList<>();
         upgrades.add(new Upgrade("Upgrade Clicker", 10, 1.5,
-                "Personal Github\\compSci\\FinalSummative\\images\\clickerIcon.png", () -> {
+                "images/clickerIcon.png", () -> {
                     dpc++;
                     return null;
                 }));
         upgrades.add(new Upgrade("Hydraulic Press", 100, 1.5,
-                "Personal Github\\compSci\\FinalSummative\\images\\hydraulicPress.png", () -> {
-                    dps += 100;
-                    // if (sprites.contains(new GifSprite(null, 0, 0))) {
-                    //     sprites.remove(new GifSprite(null, 0, 0));
-                    // }
+                "images/hydraulicPress.png", () -> {
+                    dps += 20;
+                    GifSprite sprite = new GifSprite("images/hydraulic_press.gif", 800, 500, 200, 200);
+                    if (!sprites.contains(sprite)) {
+                        sprites.add(sprite);
+                    }
                     return null;
                 }));
         // upgrades.add(new Upgrade("Subway Surfers", 200, () -> {
@@ -56,6 +62,9 @@ public class UpgradeHandler {
                 g.drawImage(element.image, x + count * 45 + 1, y + 1, 39, 39, parentCanvas);
             }
             count++;
+        }
+        for (GifSprite sprite : sprites) {
+            g.drawImage(sprite.image, sprite.x, sprite.y, sprite.width, sprite.height, parentCanvas);
         }
     }
 
