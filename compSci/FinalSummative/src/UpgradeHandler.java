@@ -1,14 +1,11 @@
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 
 public class UpgradeHandler {
@@ -22,6 +19,7 @@ public class UpgradeHandler {
     private List<GifSprite> sprites;
     private Tooltip tooltip = null;
     private int x = 413, y = 380; // Default position for upgrades
+    private List<DVDHandler> dvds;
 
     public UpgradeHandler(Canvas parentCanvas, JFrame window) {
         this.parentCanvas = parentCanvas;
@@ -32,11 +30,17 @@ public class UpgradeHandler {
         dpsMult = 1;
         sprites = new CopyOnWriteArrayList<>();
         upgrades = new CopyOnWriteArrayList<>();
+        dvds = new CopyOnWriteArrayList<>();
         upgrades.add(new Upgrade("Upgrade Clicker", 10, 1.5,
                 "images/clickerIcon.png", () -> {
                     dpc++;
                     return null;
                 }));
+        upgrades.add(new Upgrade("DVDs", 10, 2, "images/dvd.png", () -> {
+            dvds.add(new DVDHandler());
+            return null;
+
+        }));
         upgrades.add(new Upgrade("Hydraulic Press", 100, 1.5,
                 "images/hydraulicPress.png", () -> {
                     dps += 20;
@@ -86,6 +90,9 @@ public class UpgradeHandler {
         }
         if (tooltip != null) {
             tooltip.draw(g);
+        }
+        for (DVDHandler dvd : dvds) {
+            dvd.draw(g, parentCanvas);
         }
         for (GifSprite sprite : sprites) {
             g.drawImage(sprite.image, sprite.x, sprite.y, sprite.width, sprite.height, parentCanvas);

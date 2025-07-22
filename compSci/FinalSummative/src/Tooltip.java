@@ -15,7 +15,7 @@ public class Tooltip {
         if (text == null || text.isEmpty()) return;
 
         FontMetrics fm = g.getFontMetrics();
-        int width = fm.stringWidth(text) + 10;
+        int width = Math.max(fm.stringWidth(text) + 10, fm.stringWidth(text2) + 10);
         int height = fm.getHeight()*2 + 4;
 
         g.setColor(new Color(0, 0, 0, 170));
