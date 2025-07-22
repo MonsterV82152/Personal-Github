@@ -21,6 +21,7 @@ public class UpgradeHandler {
     private Tooltip tooltip = null;
     private int x = 400, y = 380; // Default position for upgrades
     private List<DVDHandler> dvds;
+    private int critupgrade = 0;
 
     public UpgradeHandler(JPanel parentCanvas, JFrame window) {
         this.parentCanvas = parentCanvas;
@@ -65,7 +66,10 @@ public class UpgradeHandler {
                 clip.loop(Clip.LOOP_CONTINUOUSLY); // or clip.loop(Clip.LOOP_CONTINUOUSLY);
             }
             return null;
-
+        }));
+        upgrades.add(new Upgrade("Critical Hit", 600, "images/crit.png", () -> {
+            critupgrade = 5;
+            return null;
         }));
         upgrades.add(new Upgrade("Breaking News", 700, "images/breaking_news.png", () -> {
             dps += 50;
@@ -205,6 +209,10 @@ public class UpgradeHandler {
 
     public int getDPS() {
         return dps * dpsMult;
+    }
+
+    public int getCritUpgrade() {
+        return critupgrade;
     }
 
 }

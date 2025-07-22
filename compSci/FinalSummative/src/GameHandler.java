@@ -1,17 +1,13 @@
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
 public class GameHandler extends JPanel implements Runnable, KeyListener, MouseListener {
     private static JFrame window;
@@ -48,7 +44,7 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
         clickButton = new JButton("Click!");
         clickButton.addActionListener(e -> {
             Point loc = clickButton.getLocation();
-            dopamineCount += upgradeHandler.getDPC();
+            dopamineCount += Math.random()*100 < upgradeHandler.getCritUpgrade() ? upgradeHandler.getDPC()*6 : upgradeHandler.getDPC();
             numbers.add(new FloatingNumber(loc.x + (int) (Math.random() * 50) + 5, loc.y, upgradeHandler.getDPC()));
         });
         clickButton.setBounds((1000 - 100) / 2, (700 - 40) / 2, 100, 40);
