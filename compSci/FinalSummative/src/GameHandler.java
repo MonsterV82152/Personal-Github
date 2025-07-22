@@ -1,16 +1,11 @@
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.LayoutStyle;
-import javax.swing.plaf.DimensionUIResource;
-import javax.swing.plaf.TextUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -77,8 +72,6 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
                 Graphics g = bs.getDrawGraphics();
                 try {
                     g.clearRect(0, 0, 1000, 700); // Clear old frame
-                    g.setColor(Color.WHITE);
-                    g.fillRect(0, 0, getWidth(), getHeight());
                     for (FloatingNumberDisplay element : numbers) {
                         element.draw(g);
                     }
@@ -86,7 +79,9 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
                     g.setFont(new Font("Arial", Font.BOLD, 18));
                     g.drawString("Dopamine Count: " + dopamineCount, 20, 30);
                     g.drawString("Dopamine Per Second: " + upgradeHandler.getDPS(), 20, 60);
+                    g.drawString("Dopamine Per Click: " + upgradeHandler.getDPC(), 20, 90);
                     upgradeHandler.draw(g);
+
                 } finally {
                     g.dispose();
                 }
@@ -129,6 +124,11 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
 
         long delay = 1000;
         long period = 1000;
+        addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseMoved(MouseEvent e) {
+                upgradeHandler.hoverEvent(e);
+            }
+        });
 
         timer.scheduleAtFixedRate(task, delay, period);
         while (alive) {
@@ -166,7 +166,7 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        upgradeHandler.mouseEvent(e);
+        dopamineCount -= upgradeHandler.mouseEvent(e, dopamineCount);
     }
 
     @Override
@@ -184,4 +184,5 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
     @Override
     public void mouseReleased(MouseEvent e) {
     }
+
 }
