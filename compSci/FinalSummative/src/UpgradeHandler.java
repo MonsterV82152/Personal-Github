@@ -82,21 +82,6 @@ public class UpgradeHandler {
             }
             return null;
         }));
-        upgrades.add(new Upgrade("Soothing Rain Sounds", 2500, "images/rain.png", () -> {
-            dps += 150;
-            GifSprite sprite = new GifSprite("images/rain.gif", 1000, 700, 500, 350);
-            if (!sprites.contains(sprite)) {
-                sprites.add(sprite);
-                File audioFile = new File("sounds/rain.wav");
-                AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-
-                // Get clip and open
-                Clip clip = AudioSystem.getClip();
-                clip.open(audioStream);
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-            }
-            return null;
-        }));
     }
 
     public void draw(Graphics g) {
