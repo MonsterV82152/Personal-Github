@@ -127,7 +127,7 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
         long period = 1000;
         addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseMoved(MouseEvent e) {
-                upgradeHandler.hoverEvent(e);
+                upgradeHandler.hoverEvent(e, dopamineCount);
             }
         });
 
