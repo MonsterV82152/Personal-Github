@@ -144,7 +144,7 @@ public class UpgradeHandler {
                     if (dopamineCount >= upgrade.price) {
                         price = upgrade.price;
                         upgrade.update();
-                        hoverEvent(e, dopamineCount);
+                        hoverEvent(e);
                     } else {
                         System.out.println("Not enough dopamine to buy " + upgrade.name);
                     }
@@ -159,7 +159,7 @@ public class UpgradeHandler {
         return price;
     }
 
-    public void hoverEvent(MouseEvent e, long dopamine) {
+    public void hoverEvent(MouseEvent e) {
         int mouseX = e.getX();
         int mouseY = e.getY();
 
@@ -178,7 +178,7 @@ public class UpgradeHandler {
 
             if (mouseX >= rectX && mouseX <= rectX + 40 &&
                     mouseY >= rectY && mouseY <= rectY + 40) {
-                tooltip = new Tooltip(upgrade.name, "Price: " + upgrade.price, mouseX + 10, mouseY, upgrade.price > dopamine);
+                tooltip = new Tooltip(upgrade.name, "Price: " + upgrade.price, mouseX + 10, mouseY);
                 break;
             }
         }
