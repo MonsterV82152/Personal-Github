@@ -91,12 +91,20 @@ public class UpgradeHandler {
         if (tooltip != null) {
             tooltip.draw(g);
         }
-        for (DVDHandler dvd : dvds) {
-            dvd.draw(g, parentCanvas);
-        }
+        
         for (GifSprite sprite : sprites) {
             g.drawImage(sprite.image, sprite.x, sprite.y, sprite.width, sprite.height, parentCanvas);
         }
+    }
+    public int drawBackground(Graphics g) {
+        int sum = 0;
+        for (DVDHandler dvd : dvds) {
+            sum += dvd.update();
+            dvd.draw(g, parentCanvas);
+
+        }
+        return sum;
+
     }
 
     public int mouseEvent(MouseEvent e, long dopamineCount) {

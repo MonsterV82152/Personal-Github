@@ -72,6 +72,7 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
                 Graphics g = bs.getDrawGraphics();
                 try {
                     g.clearRect(0, 0, 1000, 700); // Clear old frame
+                    dopamineCount += upgradeHandler.drawBackground(g);
                     for (FloatingNumberDisplay element : numbers) {
                         element.draw(g);
                     }
