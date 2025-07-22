@@ -16,7 +16,6 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
     private static GameHandler instance;
     private static long dopamineCount;
     private static Thread gameThread;
-    private static int dpc;
     private static UpgradeHandler upgradeHandler;
     private static List<FloatingNumberDisplay> numbers;
 
@@ -24,7 +23,6 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
         window = new JFrame("Dopamine Clicker");
         
         dopamineCount = 0;
-        dpc = 1;
         numbers = new ArrayList<>();
         upgradeHandler = new UpgradeHandler();
 
@@ -42,8 +40,8 @@ public class GameHandler extends Canvas implements Runnable, KeyListener, MouseL
         JButton button = new JButton("Click!");
         button.addActionListener(e -> {
             Point loc = button.getLocation();
-            dopamineCount += dpc;
-            numbers.add(new FloatingNumber(loc.x + (int)(Math.random() * 50)+5, loc.y, dpc));
+            dopamineCount += upgradeHandler.getDPC();
+            numbers.add(new FloatingNumber(loc.x + (int)(Math.random() * 50)+5, loc.y, upgradeHandler.getDPC()));
         });
         button.setSize(100, 40);
         button.setLocation((1000 - 100) / 2, (700 - 40) / 2);
