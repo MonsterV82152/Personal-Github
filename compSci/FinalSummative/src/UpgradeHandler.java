@@ -68,7 +68,7 @@ public class UpgradeHandler {
                 }));
         upgrades.add(new Upgrade("Lofi Beats", 500, "images/lofiBeats.png", () -> { // Upgrade dopamine per second
             dps += 25;
-            GifSprite sprite = new GifSprite("images/lofi-girl.gif", 200, 500, 300, 200);
+            GifSprite sprite = new GifSprite("images/lofi-girl.gif", 300, 500, 200, 200);
             if (!sprites.contains(sprite)) {
                 sprites.add(sprite);
                 File audioFile = new File("sounds/lofi_beats.wav");

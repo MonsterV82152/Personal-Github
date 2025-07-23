@@ -38,7 +38,7 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
         endTime = 0; // Reset end time
         startTime = 0; // Reset start time
         window = new JFrame("Dopamine Clicker"); // Creates the game window
-        dopamineCount = 1000000;
+        dopamineCount = 0;
         numbers = new CopyOnWriteArrayList<>();
         upgradeHandler = new UpgradeHandler(this, window); // Initialize UpgradeHandler - main upgrade management and related logic
         layeredPane = new JLayeredPane();
