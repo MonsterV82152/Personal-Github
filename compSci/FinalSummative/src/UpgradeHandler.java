@@ -118,6 +118,22 @@ public class UpgradeHandler {
             critupgrade = 15;
             return null;
         }));
+        upgrades.add(new Upgrade("ASMR Slime Videos", 1000, "images/subwaySurfer.png", () -> { // Upgrade dopamine per second
+            dps += 100;
+            GifSprite sprite = new GifSprite("images/asmr_slime.gif", 0, 50, 300, 200);
+            if (!sprites.contains(sprite)) {
+                sprites.add(sprite);
+            }
+            return null;
+        }));
+        upgrades.add(new Upgrade("Watch a Guy Eat", 1000, "images/subwaySurfer.png", () -> { // Upgrade dopamine per second
+            dps += 100;
+            GifSprite sprite = new GifSprite("images/guy_eating.gif", 0, 300, 300, 200);
+            if (!sprites.contains(sprite)) {
+                sprites.add(sprite);
+            }
+            return null;
+        }));
         upgrades.add(new Upgrade("Touch Grass", 20000, "images/grass.png", () -> { // End the game
             endgame = true;
             return null;
