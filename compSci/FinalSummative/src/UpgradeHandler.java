@@ -9,9 +9,9 @@ import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
 /**
- * UpgradeHandler manages the upgrades in the game, including their effects, drawing them on the screen,
+ * UpgradeHandler manages the upgrades in the game, including their effects,
+ * drawing them on the screen,
  */
 public class UpgradeHandler {
     private int dps; // Dopamine per second
@@ -47,19 +47,19 @@ public class UpgradeHandler {
         upgrades = new CopyOnWriteArrayList<>();
         dvds = new CopyOnWriteArrayList<>();
         // Adds initial upgrades with their actions and prices
-        upgrades.add(new Upgrade("Upgrade Clicker", 10, 1.5, // Upgrade dopamine per click
+        upgrades.add(new Upgrade("Upgrade Clicker", 7, 1.5, // Upgrade dopamine per click
                 "images/clickerIcon.png", () -> {
                     dpc++;
                     return null;
                 }));
-        upgrades.add(new Upgrade("DVDs", 10, 2, "images/dvd.png", () -> { // Adds a new DVD handler
+        upgrades.add(new Upgrade("DVDs", 50, 2, "images/dvd.png", () -> { // Adds a new DVD handler
             dvds.add(new DVDHandler());
             return null;
 
         }));
-        upgrades.add(new Upgrade("Hydraulic Press", 100, 1.5, // Upgrade dopamine per second
+        upgrades.add(new Upgrade("Hydraulic Press", 150, 1.5, // Upgrade dopamine per second
                 "images/hydraulicPress.png", () -> {
-                    dps += 10;
+                    dps += 15;
                     GifSprite sprite = new GifSprite("images/hydraulic_press.gif", 800, 500, 200, 200);
                     if (!sprites.contains(sprite)) {
                         sprites.add(sprite);
@@ -68,7 +68,7 @@ public class UpgradeHandler {
                 }));
         upgrades.add(new Upgrade("Lofi Beats", 500, "images/lofiBeats.png", () -> { // Upgrade dopamine per second
             dps += 25;
-            GifSprite sprite = new GifSprite("images/lofi-girl.gif", 300, 500, 200, 200);
+            GifSprite sprite = new GifSprite("images/lofi-girl.gif", 220, 500, 200, 200);
             if (!sprites.contains(sprite)) {
                 sprites.add(sprite);
                 File audioFile = new File("sounds/lofi_beats.wav");
@@ -81,11 +81,12 @@ public class UpgradeHandler {
             }
             return null;
         }));
-        upgrades.add(new Upgrade("Critical Hit", 600, "images/crit.png", () -> { // Upgrade critical hit chance
+        upgrades.add(new Upgrade("Critical Hit", 700, "images/crit.png", () -> { // Upgrade critical hit chance
             critupgrade = 5;
             return null;
         }));
-        upgrades.add(new Upgrade("Breaking News", 700, "images/breaking_news.png", () -> { // Upgrade dopamine per second
+        upgrades.add(new Upgrade("Breaking News", 1000, "images/breaking_news.png", () -> { // Upgrade dopamine per
+                                                                                            // second
             dps += 50;
             GifSprite sprite = new GifSprite("images/breakingNews.gif", 0, 0, 1000, 20);
             if (!sprites.contains(sprite)) {
@@ -93,9 +94,10 @@ public class UpgradeHandler {
             }
             return null;
         }));
-        upgrades.add(new Upgrade("Subway Surfers", 1000, "images/subwaySurfer.png", () -> { // Upgrade dopamine per second
+        upgrades.add(new Upgrade("Subway Surfers", 1300, "images/subwaySurfer.png", () -> { // Upgrade dopamine per
+                                                                                            // second
             dps += 100;
-            GifSprite sprite = new GifSprite("images/subway_surfer.gif", 500, 500, 300, 200);
+            GifSprite sprite = new GifSprite("images/subway_surfer.gif", 460, 500, 300, 200);
             if (!sprites.contains(sprite)) {
                 sprites.add(sprite);
             }
@@ -118,23 +120,23 @@ public class UpgradeHandler {
             critupgrade = 15;
             return null;
         }));
-        upgrades.add(new Upgrade("ASMR Slime Videos", 1000, "images/subwaySurfer.png", () -> { // Upgrade dopamine per second
+        upgrades.add(new Upgrade("ASMR Slime Videos", 9000, "images/slime.png", () -> { // Upgrade dopamine per second
             dps += 100;
-            GifSprite sprite = new GifSprite("images/asmr_slime.gif", 0, 50, 300, 200);
+            GifSprite sprite = new GifSprite("images/asmr_slime.gif", 0, 200, 300, 200);
             if (!sprites.contains(sprite)) {
                 sprites.add(sprite);
             }
             return null;
         }));
-        upgrades.add(new Upgrade("Watch a Guy Eat", 1000, "images/subwaySurfer.png", () -> { // Upgrade dopamine per second
+        upgrades.add(new Upgrade("Watch a Guy Eat", 11000, "images/food.png", () -> { // Upgrade dopamine per second
             dps += 100;
-            GifSprite sprite = new GifSprite("images/guy_eating.gif", 0, 300, 300, 200);
+            GifSprite sprite = new GifSprite("images/guy_eating.gif", 600, 100, 400, 200);
             if (!sprites.contains(sprite)) {
                 sprites.add(sprite);
             }
             return null;
         }));
-        upgrades.add(new Upgrade("Touch Grass", 20000, "images/grass.png", () -> { // End the game
+        upgrades.add(new Upgrade("Touch Grass", 50000, "images/grass.png", () -> { // End the game
             endgame = true;
             return null;
         }));
@@ -148,20 +150,24 @@ public class UpgradeHandler {
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g; // Use Graphics2D for better rendering
 
-        // Draw upgrade icons - each upgrade is drawn in a grid-like fashion and new upgrades slide in
+        // Draw upgrade icons - each upgrade is drawn in a grid-like fashion and new
+        // upgrades slide in
         int visibleCount = 0; // Count how many upgrades are visible
         int maxVisible = 5;
 
         int totalVisible = 0;
         for (Upgrade element : upgrades) {
-            if (element.type == Upgrade.SINGLE && element.count > 0) continue;
+            if (element.type == Upgrade.SINGLE && element.count > 0)
+                continue;
             totalVisible++;
         }
         totalVisible = Math.min(totalVisible, maxVisible); // Limit to maxVisible upgrades
 
         for (Upgrade element : upgrades) {
-            if (element.type == Upgrade.SINGLE && element.count > 0) continue;
-            if (visibleCount >= maxVisible) break;
+            if (element.type == Upgrade.SINGLE && element.count > 0)
+                continue;
+            if (visibleCount >= maxVisible)
+                break;
 
             element.targetX = x + visibleCount * 70;
 
@@ -200,9 +206,9 @@ public class UpgradeHandler {
         }
     }
 
-
     /**
-     * Draws the background for the upgrades, including DVD handlers and GIF sprites.
+     * Draws the background for the upgrades, including DVD handlers and GIF
+     * sprites.
      *
      * @param g The Graphics object used for drawing
      * @return The total dopamine count from all DVD handlers
@@ -219,13 +225,15 @@ public class UpgradeHandler {
         return sum; // Return the total dopamine gain from all DVD handlers
 
     }
+
     /**
      * Handles mouse click events to purchase upgrades.
-     * @param e The MouseEvent containing mouse position
+     * 
+     * @param e             The MouseEvent containing mouse position
      * @param dopamineCount The current dopamine count
      * @return The price of the upgrade purchased, or 0 if none was purchased
      */
-    public int mouseEvent(MouseEvent e, long dopamineCount) { 
+    public int mouseEvent(MouseEvent e, long dopamineCount) {
         int mouseX = e.getX(); // Get mouse X position
         int mouseY = e.getY(); // Get mouse Y position
         int price = 0;
@@ -233,7 +241,7 @@ public class UpgradeHandler {
         System.out.println("Click at: " + mouseX + ", " + mouseY);
 
         for (int i = -1, counter = 0; counter < upgrades.size(); counter++) { // Iterate through upgrades
-            Upgrade upgrade = upgrades.get(counter); 
+            Upgrade upgrade = upgrades.get(counter);
             if (upgrade.type == Upgrade.SINGLE && upgrade.count > 0) {
                 System.out.println("Skipping upgrade " + upgrade.name + " as it is already purchased.");
                 continue; // Skip already purchased upgrades
@@ -252,7 +260,7 @@ public class UpgradeHandler {
                         upgrade.update(); // Update the upgrade (e.g., apply its effect and increment count)
                         hoverEvent(e, dopamineCount); // Show tooltip for the upgraded item
                     } else {
-                        System.out.println("Not enough dopamine to buy " + upgrade.name); 
+                        System.out.println("Not enough dopamine to buy " + upgrade.name);
                     }
 
                 } catch (Exception ex) {
@@ -290,7 +298,9 @@ public class UpgradeHandler {
 
             if (mouseX >= rectX && mouseX <= rectX + 60 &&
                     mouseY >= rectY && mouseY <= rectY + 60) {
-                tooltip = new Tooltip(upgrade.name, "Price: " + upgrade.price, mouseX + 10, mouseY, // Create tooltip with upgrade name and price
+                tooltip = new Tooltip(upgrade.name, "Price: " + upgrade.price, mouseX + 10, mouseY, // Create tooltip
+                                                                                                    // with upgrade name
+                                                                                                    // and price
                         upgrade.price > dopamine); // Show red if not enough dopamine
                 break;
             }
@@ -299,6 +309,7 @@ public class UpgradeHandler {
 
     /**
      * Returns the total dopamine per click.
+     * 
      * @return The total dopamine per click
      */
     public int getDPC() {
@@ -307,6 +318,7 @@ public class UpgradeHandler {
 
     /**
      * Returns the total dopamine per second.
+     * 
      * @return The total dopamine per second
      */
     public int getDPS() {
@@ -315,17 +327,28 @@ public class UpgradeHandler {
 
     /**
      * Returns the current critical chance.
+     * 
      * @return The current critical chance
      */
     public int getCritUpgrade() {
         return critupgrade;
     }
+
     /**
      * Returns whether the game has reached the endgame state.
+     * 
      * @return True if the endgame condition is met, false otherwise
      */
     public boolean isEndgame() {
         return endgame;
     }
 
+    /**
+     * Returns the list of available upgrades.
+     * 
+     * @return The list of upgrades
+     */
+    public List<Upgrade> getUpgrades() {
+        return upgrades; // Returns the list of available upgrades
+    }
 }

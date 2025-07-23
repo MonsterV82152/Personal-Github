@@ -1,0 +1,13 @@
+dopamineCount=7
+upgrade:Upgrade Clicker,0
+upgrade:DVDs,0
+upgrade:Hydraulic Press,0
+upgrade:Lofi Beats,0
+upgrade:Critical Hit,0
+upgrade:Breaking News,0
+upgrade:Subway Surfers,0
+upgrade:Soothing Rain Sounds,0
+upgrade:Upgrade Critical Hit,0
+upgrade:ASMR Slime Videos,0
+upgrade:Watch a Guy Eat,0
+upgrade:Touch Grass,0
