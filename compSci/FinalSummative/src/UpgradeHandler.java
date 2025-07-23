@@ -16,6 +16,7 @@ public class UpgradeHandler {
     private int dpcMult;
     private JPanel parentCanvas;
     private JFrame window;
+    private boolean endgame;
     private List<Upgrade> upgrades;
     private List<GifSprite> sprites;
     private Tooltip tooltip = null;
@@ -29,6 +30,7 @@ public class UpgradeHandler {
         dpc = 1;
         dpcMult = 1;
         dps = 0;
+        endgame = false;
         dpsMult = 1;
         sprites = new CopyOnWriteArrayList<>();
         upgrades = new CopyOnWriteArrayList<>();
@@ -102,6 +104,10 @@ public class UpgradeHandler {
         }));
         upgrades.add(new Upgrade("Upgrade Critical Hit", 7000, "images/crit.png", () -> {
             critupgrade = 15;
+            return null;
+        }));
+        upgrades.add(new Upgrade("Touch Grass", 20000, "images/grass.png", () -> {
+            endgame = true;
             return null;
         }));
     }
@@ -252,6 +258,9 @@ public class UpgradeHandler {
 
     public int getCritUpgrade() {
         return critupgrade;
+    }
+    public boolean isEndgame() {
+        return endgame;
     }
 
 }
