@@ -77,7 +77,7 @@ public class CCC24S5 {
             State currentState = que.poll();
             if (currentState.sum * total == currentState.total * sum) {
                 boolean[][] vis = new boolean[2][n];
-                bool full = true;
+                boolean full = true;
                 for (int i = 0; i < visited.length; i++) {
                     for (int j = 0; j < visited[i].length; j++) {
                         vis[i][j] = visited[i][j] || currentState.visited[i][j];
