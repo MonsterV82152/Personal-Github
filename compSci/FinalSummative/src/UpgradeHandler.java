@@ -100,6 +100,10 @@ public class UpgradeHandler {
 
             return null;
         }));
+        upgrades.add(new Upgrade("Upgrade Critical Hit", 7000, "images/crit.png", () -> {
+            critupgrade = 15;
+            return null;
+        }));
     }
 
     public void draw(Graphics g) {
