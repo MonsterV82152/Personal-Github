@@ -103,25 +103,60 @@ public class UpgradeHandler {
     }
 
     public void draw(Graphics g) {
-        int count = 0;
+        Graphics2D g2d = (Graphics2D) g;
+
+        int visibleCount = 0;
+        int maxVisible = 5;
+
+        int totalVisible = 0;
         for (Upgrade element : upgrades) {
-            if (count >= 5) {
-                break; // Limit to first 5 upgrades
-            }
-            if (element.type == Upgrade.SINGLE && element.count > 0) {
-                continue;
-            } else {
-                g.setColor(Color.cyan);
-                g.drawRect(x + count * 45, y, 40, 40);
-                g.drawImage(element.image, x + count * 45 + 1, y + 1, 39, 39, parentCanvas);
-            }
-            count++;
+            if (element.type == Upgrade.SINGLE && element.count > 0) continue;
+            totalVisible++;
         }
+        totalVisible = Math.min(totalVisible, maxVisible);
+
+        for (Upgrade element : upgrades) {
+            if (element.type == Upgrade.SINGLE && element.count > 0) continue;
+            if (visibleCount >= maxVisible) break;
+
+            element.targetX = x + visibleCount * 45;
+
+            if (visibleCount == totalVisible - 1) {
+                element.drawX = element.targetX;
+                element.alpha = Math.min(1.0f, element.alpha + 0.01f);
+            } else {
+                if (Math.abs(element.drawX - element.targetX) > 1000) {
+                    // First time showing — place directly
+                    element.drawX = element.targetX;
+                } else {
+                    // Already visible — slide normally
+                    if (element.drawX < element.targetX) {
+                        element.drawX += Math.min(3, element.targetX - element.drawX);
+                    } else if (element.drawX > element.targetX) {
+                        element.drawX -= Math.min(3, element.drawX - element.targetX);
+                    }
+                }
+                element.alpha = 1.0f;
+            }
+
+            if (element.alpha > 0.01f) {
+                g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, element.alpha));
+                g2d.setColor(Color.cyan);
+                g2d.drawRect(element.drawX, y, 40, 40);
+                g2d.drawImage(element.image, element.drawX + 1, y + 1, 39, 39, parentCanvas);
+            }
+
+            visibleCount++;
+        }
+
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+
         if (tooltip != null) {
             tooltip.draw(g);
         }
-
     }
+
+
 
     public int drawBackground(Graphics g) {
         int sum = 0;

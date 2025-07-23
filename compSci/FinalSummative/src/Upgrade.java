@@ -1,9 +1,7 @@
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Callable;
-
 import javax.imageio.ImageIO;
 
 public class Upgrade {
@@ -16,6 +14,9 @@ public class Upgrade {
     public int count;
     public BufferedImage image;
     public Callable<Void> action;
+    public int drawX;         // Current x-position for smooth sliding
+    public int targetX;       // Target x-position to slide to
+    public float alpha = 0f;  // Transparency (0.0 = fully transparent, 1.0 = fully visible)
 
     public Upgrade(String name, int price, double multiplier, String imageName, Callable<Void> action) {
         this.name = name;
@@ -23,6 +24,10 @@ public class Upgrade {
         this.count = 0;
         this.type = MULT;
         this.multiplier = multiplier;
+
+        this.drawX = -10000;
+        this.targetX = 0;
+        this.alpha = 0f;
 
         try {
             this.image = ImageIO.read(new File(imageName)); // Loads and blocks until ready
@@ -38,6 +43,10 @@ public class Upgrade {
         this.price = price;
         this.count = 0;
         this.type = SINGLE;
+
+        this.drawX = -10000;
+        this.targetX = 0;
+        this.alpha = 0f;
         try {
             this.image = ImageIO.read(new File(imageName)); // Loads and blocks until ready
         } catch (IOException e) {
