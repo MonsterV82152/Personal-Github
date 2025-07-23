@@ -24,7 +24,7 @@ public class UpgradeHandler {
     private List<Upgrade> upgrades; // List of available upgrades
     private List<GifSprite> sprites; // List of GIF sprites for visual effects
     private Tooltip tooltip = null; // Tooltip for displaying upgrade information
-    private int x = 400, y = 380; // Default position for upgrades
+    private int x = 330, y = 380; // Default position for upgrades
     private List<DVDHandler> dvds; // List of DVD handlers for managing DVD upgrades
     private int critupgrade = 0; // Critical upgrade level
 
@@ -68,7 +68,7 @@ public class UpgradeHandler {
                 }));
         upgrades.add(new Upgrade("Lofi Beats", 500, "images/lofiBeats.png", () -> { // Upgrade dopamine per second
             dps += 25;
-            GifSprite sprite = new GifSprite("images/lofi-girl.gif", 400, 500, 200, 200);
+            GifSprite sprite = new GifSprite("images/lofi-girl.gif", 200, 500, 300, 200);
             if (!sprites.contains(sprite)) {
                 sprites.add(sprite);
                 File audioFile = new File("sounds/lofi_beats.wav");
@@ -95,7 +95,7 @@ public class UpgradeHandler {
         }));
         upgrades.add(new Upgrade("Subway Surfers", 1000, "images/subwaySurfer.png", () -> { // Upgrade dopamine per second
             dps += 100;
-            GifSprite sprite = new GifSprite("images/subway_surfer.gif", 600, 500, 200, 200);
+            GifSprite sprite = new GifSprite("images/subway_surfer.gif", 500, 500, 300, 200);
             if (!sprites.contains(sprite)) {
                 sprites.add(sprite);
             }
@@ -147,7 +147,7 @@ public class UpgradeHandler {
             if (element.type == Upgrade.SINGLE && element.count > 0) continue;
             if (visibleCount >= maxVisible) break;
 
-            element.targetX = x + visibleCount * 45;
+            element.targetX = x + visibleCount * 70;
 
             if (visibleCount == totalVisible - 1) {
                 element.drawX = element.targetX;
@@ -170,8 +170,8 @@ public class UpgradeHandler {
             if (element.alpha > 0.01f) { // Only draw if the upgrade is visible enough
                 g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, element.alpha));
                 g2d.setColor(Color.cyan);
-                g2d.drawRect(element.drawX, y, 40, 40);
-                g2d.drawImage(element.image, element.drawX + 1, y + 1, 39, 39, parentCanvas);
+                g2d.drawRect(element.drawX, y, 60, 60);
+                g2d.drawImage(element.image, element.drawX + 1, y + 1, 59, 59, parentCanvas);
             }
 
             visibleCount++; // Increment visible count for next upgrade
@@ -223,12 +223,12 @@ public class UpgradeHandler {
                 continue; // Skip already purchased upgrades
             }
             i++; // Increment index for grid-like layout
-            int rectX = x + i * 45; // Calculate the X position for this upgrade
+            int rectX = x + i * 70; // Calculate the X position for this upgrade
             int rectY = y; // Y position is constant for all upgrades
 
             // Check if click is inside this upgrade's box
-            if (mouseX >= rectX && mouseX <= rectX + 40 &&
-                    mouseY >= rectY && mouseY <= rectY + 40) {
+            if (mouseX >= rectX && mouseX <= rectX + 60 &&
+                    mouseY >= rectY && mouseY <= rectY + 60) {
 
                 try {
                     if (dopamineCount >= upgrade.price) { // Check if enough dopamine to purchase upgrade
@@ -269,11 +269,11 @@ public class UpgradeHandler {
                 break; // Limit to first 5 upgrades
             }
             i++;
-            int rectX = x + i * 45;
+            int rectX = x + i * 70;
             int rectY = y;
 
-            if (mouseX >= rectX && mouseX <= rectX + 40 &&
-                    mouseY >= rectY && mouseY <= rectY + 40) {
+            if (mouseX >= rectX && mouseX <= rectX + 60 &&
+                    mouseY >= rectY && mouseY <= rectY + 60) {
                 tooltip = new Tooltip(upgrade.name, "Price: " + upgrade.price, mouseX + 10, mouseY, // Create tooltip with upgrade name and price
                         upgrade.price > dopamine); // Show red if not enough dopamine
                 break;

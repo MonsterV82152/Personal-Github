@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -39,7 +38,7 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
         endTime = 0; // Reset end time
         startTime = 0; // Reset start time
         window = new JFrame("Dopamine Clicker"); // Creates the game window
-        dopamineCount = 0;
+        dopamineCount = 1000000;
         numbers = new CopyOnWriteArrayList<>();
         upgradeHandler = new UpgradeHandler(this, window); // Initialize UpgradeHandler - main upgrade management and related logic
         layeredPane = new JLayeredPane();
@@ -68,7 +67,7 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
             numbers.add(new FloatingNumber(loc.x + (int) (Math.random() * 50) + 5, loc.y, dope,
                     dope > upgradeHandler.getDPC()));
         });
-        clickButton.setBounds((1000 - 100) / 2, (700 - 40) / 2, 100, 40);
+        clickButton.setBounds((1000 - 100) / 2, (700 - 40) / 2 -30, 100, 40);
         clickButton.setVisible(true);
 
         // Set up layered pane
