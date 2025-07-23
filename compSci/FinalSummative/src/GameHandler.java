@@ -28,12 +28,22 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
     private static long startTime; // Start the stopwatch
     private static JButton clickButton; // Make button a field so we can access it
 
+    /**
+     * Singleton constructor to ensure only one instance of GameHandler exists.
+     * Initializes the game window, button, and other components.
+     */
     private GameHandler() {
-        window = new JFrame("Dopamine Clicker");
-        dopamineCount = 100000;
+        // Initialize the game state
+        alive = false;
+        instance = this;
+        endTime = 0; // Reset end time
+        startTime = 0; // Reset start time
+        window = new JFrame("Dopamine Clicker"); // Creates the game window
+        dopamineCount = 0;
         numbers = new CopyOnWriteArrayList<>();
-        upgradeHandler = new UpgradeHandler(this, window);
+        upgradeHandler = new UpgradeHandler(this, window); // Initialize UpgradeHandler - main upgrade management and related logic
         layeredPane = new JLayeredPane();
+        grass = Toolkit.getDefaultToolkit().getImage("images/grass.gif"); // Load endgame image
 
         // Set up window
         window.setSize(1000, 700);
@@ -48,9 +58,9 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
         this.setOpaque(false); // Keep transparent so button shows through
         this.setBounds(0, 0, 1000, 700);
 
-        // Create and set up the click button
+        // Create and set up the click button using JButton
         clickButton = new JButton("Click!");
-        clickButton.addActionListener(e -> {
+        clickButton.addActionListener(e -> { // Handle button click
             Point loc = clickButton.getLocation();
             int dope = Math.random() * 100 < upgradeHandler.getCritUpgrade() ? upgradeHandler.getDPC() * 6
                     : upgradeHandler.getDPC();
@@ -75,13 +85,17 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
                 upgradeHandler.hoverEvent(e, dopamineCount);
             }
         });
-        grass = Toolkit.getDefaultToolkit().getImage("images/grass.gif");
+        
 
         // Set up window content
         window.setContentPane(layeredPane);
         window.setVisible(true);
     }
 
+    /**
+     * Get the singleton instance of GameHandler.
+     * @return The singleton instance of GameHandler.
+    */
     public static GameHandler getInstance() {
         if (instance == null) {
             instance = new GameHandler();
@@ -89,6 +103,10 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
         return instance;
     }
 
+    /**
+     * Paint the game components.
+     * @param g The Graphics object used for painting.
+     */
     @Override
     public void paintComponent(Graphics g) {
 
@@ -99,7 +117,14 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
         // Clear the background
         g2d.setColor(getBackground());
         g2d.fillRect(0, 0, getWidth(), getHeight());
-        if (upgradeHandler.isEndgame()) {
+        if (upgradeHandler.isEndgame()) { // If endgame is reached, draw the endgame screen
+            if (grass == null) {
+                try {
+                    grass = ImageIO.read(new File("images/grass.png")); // Load endgame image
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             if (endTime == 0) {
                 endTime = System.currentTimeMillis(); // Record end time
             }
@@ -111,18 +136,18 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
             g2d.setFont(new Font("Arial", Font.BOLD, 36));
             g2d.drawString(
                     "It took you " + (int) ((endTime - startTime) / 60000) + " minutes and ",
-                    190, 330);
+                    190, 330); // Display time in minutes
             g2d.drawString(
                     "" + ((endTime - startTime) / 1000.0 % 60) + " seconds to touch grass.",
-                    190, 370);
-            window.remove(clickButton);
+                    190, 370); // Display seconds
+            window.remove(clickButton); // Removes the click button
 
-        } else {
+        } else { // If not endgame, draw the game normally
             // Draw game elements
             dopamineCount += upgradeHandler.drawBackground(g2d);
 
             for (FloatingNumberDisplay element : numbers) {
-                element.draw(g2d);
+                element.draw(g2d); // Draws each floating number
             }
 
             // Draw UI text
@@ -137,6 +162,9 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
         g2d.dispose(); // Clean up graphics context
     }
 
+    /**
+     * Start the game thread.
+     */
     public synchronized void start() {
         if (alive)
             return;
@@ -145,24 +173,30 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
         gameThread.start();
     }
 
+    /**
+     * Stop the game thread.
+     */
     public synchronized void stop() {
         alive = false;
         try {
             if (gameThread != null) {
-                gameThread.join();
+                gameThread.join(); // Wait for the game thread to finish
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Run the game loop.
+     */
     public void run() {
         Timer timer = new Timer();
         startTime = System.currentTimeMillis();
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                dopamineCount += upgradeHandler.getDPS();
+                dopamineCount += upgradeHandler.getDPS(); // Increment dopamine count by DPS every second
             }
         };
 
@@ -170,26 +204,28 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
         long period = 1000;
         addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseMoved(MouseEvent e) {
-                upgradeHandler.hoverEvent(e, dopamineCount);
+                upgradeHandler.hoverEvent(e, dopamineCount); // Handle mouse movement for upgrade tooltips
             }
         });
         timer.scheduleAtFixedRate(task, delay, period);
 
         while (alive) {
-            update();
-            repaint();
+            update(); // Update game state
+            repaint(); // Repaint the game panel
 
             try {
-                Thread.sleep(16); // ~60 FPS
+                Thread.sleep(16); // Sleep for 16ms ~60 FPS
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         timer.cancel(); // Clean up timer
-        stop();
+        stop(); // Stop the game thread
     }
-
+    /**
+     * Update the game state.
+     */
     private void update() {
         numbers.removeIf(d -> {
             d.update();
@@ -197,36 +233,27 @@ public class GameHandler extends JPanel implements Runnable, KeyListener, MouseL
         });
     }
 
-    public void keyPressed(KeyEvent e) {
-        // Add key handling if needed
-    }
+    public void keyPressed(KeyEvent e) {}
 
-    public void keyReleased(KeyEvent e) {
-        // Add key handling if needed
-    }
+    public void keyReleased(KeyEvent e) {}
 
-    public void keyTyped(KeyEvent e) {
-        // Add key handling if needed
-    }
+    public void keyTyped(KeyEvent e) {}
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        dopamineCount -= upgradeHandler.mouseEvent(e, dopamineCount);
+        dopamineCount -= upgradeHandler.mouseEvent(e, dopamineCount); // Handle mouse click events. Subtracts the price of the upgrade if purchased
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-    }
+    public void mouseEntered(MouseEvent e) {}
 
     @Override
-    public void mouseExited(MouseEvent e) {
-    }
+    public void mouseExited(MouseEvent e) {}
 
     @Override
-    public void mousePressed(MouseEvent e) {
-    }
+    public void mousePressed(MouseEvent e) {}
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-    }
+    public void mouseReleased(MouseEvent e) {}
 }

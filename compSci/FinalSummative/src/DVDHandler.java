@@ -15,13 +15,16 @@ public class DVDHandler {
     int frames = 60;
     Image image;
 
+    /**
+     * Constructor for DVDHandler.
+     */
     public DVDHandler() {
         Random random = new Random();
-        x = random.nextInt(1000 - dvdWidth);
-        y = random.nextInt(700 - dvdHeight);
+        x = random.nextInt(1000 - dvdWidth); // Random initial position within bounds
+        y = random.nextInt(700 - dvdHeight); // Random initial position within bounds
         double angle = angles[random.nextInt(0, 4)]; // Random angle in radians
-        dx = Math.sin(angle) * velocity;
-        dy = Math.cos(angle) * velocity;
+        dx = Math.sin(angle) * velocity; // Horizontal velocity based on angle
+        dy = Math.cos(angle) * velocity; // Vertical velocity based on angle
         try {
             image = ImageIO.read(new File("images/dvd.png")); // adjust path as needed
         } catch (IOException e) {
@@ -31,9 +34,13 @@ public class DVDHandler {
         
     }
 
+    /**
+     * Updates the position of the DVD.
+     * @return The score for this update (higher if it bounced)
+     */
     public int update() {
-        x += dx;
-        y += dy;
+        x += dx; // Move horizontally
+        y += dy; // Move vertically
         int sum = 0;
 
         // Check boundaries and bounce if necessary
@@ -47,13 +54,13 @@ public class DVDHandler {
             dy = -dy; // Reverse direction vertically
             sum*=10;
         }
-        return sum;
+        return sum; // Return the score for this update, 0 if no bounce occurred
     }
-
-    public boolean isAlive() {
-        return frames > 0;
-    }
-
+    /**
+     * Draws the DVD on the given Graphics context.
+     * @param g The Graphics context to draw on
+     * @param parentCanvas The parent JPanel for proper rendering
+     */
     public void draw(Graphics g, JPanel parentCanvas) {
         g.drawImage(image, x, y, dvdWidth, dvdHeight, parentCanvas);
     }
