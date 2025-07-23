@@ -60,7 +60,7 @@ public class UpgradeHandler {
         upgrades.add(new Upgrade("Hydraulic Press", 150, 1.5, // Upgrade dopamine per second
                 "images/hydraulicPress.png", () -> {
                     dps += 15;
-                    GifSprite sprite = new GifSprite("images/hydraulic_press.gif", 800, 500, 200, 200);
+                    GifSprite sprite = new GifSprite("images/hydraulic_press.gif", 800, 500, 200, 200); // Adds a GIF sprite for the hydraulic press
                     if (!sprites.contains(sprite)) {
                         sprites.add(sprite);
                     }
@@ -88,7 +88,7 @@ public class UpgradeHandler {
         upgrades.add(new Upgrade("Breaking News", 1000, "images/breaking_news.png", () -> { // Upgrade dopamine per
                                                                                             // second
             dps += 50;
-            GifSprite sprite = new GifSprite("images/breakingNews.gif", 0, 0, 1000, 20);
+            GifSprite sprite = new GifSprite("images/breakingNews.gif", 0, 0, 1000, 20); // Adds a GIF sprite for breaking news
             if (!sprites.contains(sprite)) {
                 sprites.add(sprite);
             }
@@ -110,9 +110,9 @@ public class UpgradeHandler {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 
             // Get clip and open
-            Clip clip = AudioSystem.getClip();
+            Clip clip = AudioSystem.getClip(); 
             clip.open(audioStream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.loop(Clip.LOOP_CONTINUOUSLY); // Continuously loop the sound
 
             return null;
         }));
