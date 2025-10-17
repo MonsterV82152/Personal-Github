@@ -1,4 +1,4 @@
-public class App {
+public class quicksort {
     static int partition(int[] arr, int low, int high) {
         int pivot = arr[high]; // set the last element as pivot
         int i = (low - 1); // index of smaller element
