@@ -34,7 +34,6 @@ public class Quicksort {
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
         int[] arr = { 10, 7, 8, 9, 1, 5 };
         int n = arr.length;
         quickSort(arr, 0, n - 1);
