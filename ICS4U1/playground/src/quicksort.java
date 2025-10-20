@@ -14,7 +14,7 @@ public class quicksort {
             }
         }
 
-        // swap arr[i+1] and arr[high] (or pivot)
+        // swap arr[i+1] and arr[high]
         int temp = arr[i + 1];
         arr[i + 1] = arr[high];
         arr[high] = temp;
@@ -22,10 +22,12 @@ public class quicksort {
         return i + 1;
     }
 
+    // Recursive quicksort function
     static void quickSort(int[] arr, int low, int high) {
         if (low < high) {
             int pi = partition(arr, low, high);
 
+            // Recursively sort elements before partition and after partition
             quickSort(arr, low, pi - 1);
             quickSort(arr, pi + 1, high);
         }
