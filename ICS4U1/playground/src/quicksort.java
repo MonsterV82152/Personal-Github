@@ -1,6 +1,4 @@
-import java.sql.Time;
 import java.util.Scanner;
-import java.util.Timer;
 
 public class Quicksort {
 
@@ -54,6 +52,7 @@ public class Quicksort {
         }
         n = arr.length;
         sc.close();
+
         // sort the array
         long startTime = System.currentTimeMillis();
         quickSort(arr, 0, n - 1);
