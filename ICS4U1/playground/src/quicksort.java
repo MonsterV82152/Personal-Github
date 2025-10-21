@@ -1,5 +1,9 @@
+import java.sql.Time;
+import java.util.Scanner;
+import java.util.Timer;
+
 public class Quicksort {
-    
+
     static int[] swap(int[] arr, int a, int b) {
         // swap arr[i+1] and arr[high]
         int temp = arr[a];
@@ -7,25 +11,25 @@ public class Quicksort {
         arr[b] = temp;
         return arr;
     }
-    
-    //returns int of pivot's final position
+
+    // returns int of pivot's final position
     static int partition(int[] arr, int low, int high) {
         int pivot = arr[high]; // set the last element as pivot
         int i = (low - 1); // index of where to place next smaller element than pivot
         for (int j = low; j < high; j++) {
-            //check if element is smaller than the pivot
+            // check if element is smaller than the pivot
             if (arr[j] < pivot) {
                 i++;
 
-                //place the element in the correct position
+                // place the element in the correct position
                 arr = swap(arr, i, j);
             }
         }
 
-        //place the pivot in the correct position
-        arr = swap(arr, i+1, high);
+        // place the pivot in the correct position
+        arr = swap(arr, i + 1, high);
 
-        //return the pivot's position in the partitioned list
+        // return the pivot's position in the partitioned list
         return i + 1;
     }
 
@@ -41,14 +45,23 @@ public class Quicksort {
     }
 
     public static void main(String[] args) throws Exception {
-        int[] arr = { 10, 7, 8, 9, 1, 5, 3,6,1,4,45,234,7,21,34,7,234,1,65,45,2,23,41 };
-        int n = arr.length;
-        
-        //sort the array
-        quickSort(arr, 0, n - 1);
-        System.out.println("Sorted array: ");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the number of elements to sort: ");
+        int n = sc.nextInt();
+        int[] arr = new int[n];
         for (int i = 0; i < n; i++) {
-            System.out.print(arr[i] + " ");
+            arr[i] = (int) (Math.random() * 10000);
         }
+        n = arr.length;
+        sc.close();
+        // sort the array
+        long startTime = System.currentTimeMillis();
+        quickSort(arr, 0, n - 1);
+        long endTime = System.currentTimeMillis();
+        System.out.println("Time taken to sort: " + (endTime - startTime) + " milliseconds");
+        // System.out.println("Sorted array: ");
+        // for (int i = 0; i < n; i++) {
+        // System.out.print(arr[i] + " ");
+        // }
     }
 }
