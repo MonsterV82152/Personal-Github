@@ -1,1 +1,62 @@
+# Learning folder
+Learning/
+
+# Large files
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.wav
+*.mp3
+*.mp4
+*.avi
+*.mov
+
+# Visual Studio files
+.vs/
+*.vsidx
+*.vssscc
+*.sln.docstates
+*.suo
+*.user
+*.userosscache
+*.sln.docstates.json
+*.ipch
+*.pdb
+*.idb
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.ipdb
+*.exe
+*.dll
+
+# Build directories
+bin/
+obj/
+x64/
+Debug/
+Release/
+
+# Other IDE files
+.vscode/
+*.db
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Kaggle stuff (keeping your original entry)
 misc\kaggleStuff/*
