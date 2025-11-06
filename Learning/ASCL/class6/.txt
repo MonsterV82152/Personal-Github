@@ -1,0 +1,28 @@
+a = 3
+b = 42
+c = 3.42857142857142855
+d = 19
+e = 5
+if a % b == 0 then
+    a = a / b
+else
+    a = a * 2
+end if
+if (d - c) > (e + b) then
+    d = d - c
+else
+    d = d + e
+end if
+if a * b < d * e then
+    c = c + a / b
+else
+    c = c - b
+end if
+for i = 1 to 3 do
+    if (a + c) % 2 == 0 then
+        b = b + i
+    else
+        b = b * i
+    end if
+end for
+print a, b, c, d, e
